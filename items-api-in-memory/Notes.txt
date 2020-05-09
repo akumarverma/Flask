@@ -1,0 +1,36 @@
+imports
+-----------------------
+from flask import Flask
+from flask_restful import Resource, Api, reqparse
+from flask_jwt import JWT,jwt_required
+from security import authenticate,identity
+
+app and JWT initializtion
+------------------------
+app = Flask(__name__)
+api = Api(app)
+app.secret_key ='amit'
+jwt = JWT(app,authenticate,identity)
+
+
+Parser
+-----------------
+    parser = reqparse.RequestParser()
+
+    parser.add_argument('price',
+                        type=float,
+                        required=True,
+                        help='Price is required field')
+
+Authenticatio needed
+------------------
+@jwt_required()
+
+routers
+---------
+
+api.add_resource(Item, '/item/<string:name>')
+api.add_resource(ItemList, '/itemList/')
+
+app.run(port=5000)
+
